@@ -7,12 +7,22 @@ module.exports = (params) => {
 
   router.get('/', async (req, res) => {
     const speakers = await speakersService.getList();
-    return res.json(speakers);
+    res.render('layout/index', {
+      pageTitle: 'Welcome',
+      template: 'speakers',
+      speakers,
+    });
   });
 
-  router.get('/:shortname', (req, res) => {
-    return res.send(`detail page of ${req.params.shortname}`)
+  router.get('/:shortname', async (req, res) => {
+    const speaker = await speakersService.getSpeaker(req.params.shortname);
+    global.console.log(speaker);
+    res.render('layout/index', {
+      pageTitle: 'Welcome',
+      template: 'speakers-detail',
+      speaker,
+    });
   });
 
   return router;
-}
+};
